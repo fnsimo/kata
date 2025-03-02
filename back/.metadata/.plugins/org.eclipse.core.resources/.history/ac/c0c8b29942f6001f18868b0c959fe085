@@ -1,0 +1,72 @@
+package com.trial.product.service;
+
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.trial.product.model.Product;
+import com.trial.product.repository.ProductRepository;
+
+@Service
+public class ProductServiceImpl implements IProductService {
+
+	private final ProductRepository productRepository;
+
+	public ProductServiceImpl(ProductRepository productRepository) {
+		this.productRepository = productRepository;
+	}
+
+	public Product createProduct(Product product) {
+		product.setCreatedAt(Instant.now());
+		product.setUpdatedAt(Instant.now());
+		return productRepository.save(product);
+	}
+
+	public List<Product> getAllProducts() {
+		return productRepository.findAll();
+	}
+
+	public Optional<Product> getProductById(Long id) {
+		return productRepository.findById(id);
+	}
+
+	public Optional<Product> updateProduct(Long id, Product productUpdates) {
+		return productRepository.findById(id).map(existingProduct -> {
+			if (productUpdates.getCode() != null)
+				existingProduct.setCode(productUpdates.getCode());
+			if (productUpdates.getName() != null)
+				existingProduct.setName(productUpdates.getName());
+			if (productUpdates.getDescription() != null)
+				existingProduct.setDescription(productUpdates.getDescription());
+			if (productUpdates.getImage() != null)
+				existingProduct.setImage(productUpdates.getImage());
+			if (productUpdates.getCategory() != null)
+				existingProduct.setCategory(productUpdates.getCategory());
+			if (productUpdates.getPrice() != 0)
+				existingProduct.setPrice(productUpdates.getPrice());
+			if (productUpdates.getQuantity() != 0)
+				existingProduct.setQuantity(productUpdates.getQuantity());
+			if (productUpdates.getInternalReference() != null)
+				existingProduct.setInternalReference(productUpdates.getInternalReference());
+			if (productUpdates.getShellId() != 0)
+				existingProduct.setShellId(productUpdates.getShellId());
+			if (productUpdates.getInventoryStatus() != null)
+				existingProduct.setInventoryStatus(productUpdates.getInventoryStatus());
+			if (productUpdates.getRating() != 0)
+				existingProduct.setRating(productUpdates.getRating());
+			existingProduct.setUpdatedAt(System.currentTimeMillis());
+			return productRepository.save(existingProduct);
+		});
+	}
+
+	public boolean deleteProduct(Long id) {
+		if (!productRepository.existsById(id)) {
+			return false;
+		}
+		productRepository.deleteById(id);
+		return true;
+	}
+
+}

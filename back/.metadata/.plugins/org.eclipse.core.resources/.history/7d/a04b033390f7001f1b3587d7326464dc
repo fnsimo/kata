@@ -1,0 +1,20 @@
+package com.trial.product.service;
+
+import java.util.List;
+
+import com.trial.product.dto.ProductDto;
+import com.trial.product.model.Product;
+
+public interface IProductService {
+
+	ProductDto createProduct(ProductDto product);
+
+	List<Product> getAllProducts();
+
+	ProductDto getProductById(Long id);
+
+	ProductDto updateProduct(Long id, ProductDto productUpdates);
+
+	boolean deleteProduct(Long id);
+
+}

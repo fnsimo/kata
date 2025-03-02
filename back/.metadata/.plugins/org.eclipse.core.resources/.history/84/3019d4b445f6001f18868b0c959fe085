@@ -1,0 +1,12 @@
+package com.trial.product.security;
+
+@Bean public SecurityFilterChain securityFilterChain(HttpSecurity http)throws Exception{http.authorizeRequests().antMatchers("/h2-console/**").permitAll().anyRequest().authenticated().and().csrf().disable().headers().frameOptions().sameOrigin().and().addFilterBefore(jwtAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class); // Add
+																																																																																					// JWT
+																																																																																					// filter
+																																																																																					// before
+																																																																																					// authentication
+																																																																																					// filter
+
+return http.build();}
+
+@Bean public JwtAuthenticationFilter jwtAuthenticationFilter(){return new JwtAuthenticationFilter();}

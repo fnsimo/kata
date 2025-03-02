@@ -1,0 +1,21 @@
+spring.application.name=product
+server.port: 8080
+
+spring.datasource.url=jdbc:h2:file:./data/testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+
+spring.h2.console.settings.web-allow-others=true
+spring.h2.console.path=/h2-console
+spring.h2.console.enabled=true
+
+
+spring.jpa.hibernate.ddl-auto=update
+
+
+spring.sql.init.mode=always
+
+security.jwt.secret-key=3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b
+# 1h in millisecond
+security.jwt.expiration-time=3600000

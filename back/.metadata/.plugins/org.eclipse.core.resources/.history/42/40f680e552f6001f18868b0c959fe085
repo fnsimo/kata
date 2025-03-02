@@ -1,0 +1,45 @@
+package com.trial.product.security;
+
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.trial.product.dto.LoginUserDto;
+import com.trial.product.dto.RegisterUserDto;
+import com.trial.product.model.Compte;
+import com.trial.product.repository.CompteRepository;
+
+@Service
+public class AuthenticationService {
+	private final CompteRepository compteRepository;
+
+	private final PasswordEncoder passwordEncoder;
+
+	private final AuthenticationManager authenticationManager;
+
+	public AuthenticationService(CompteRepository compteRepository, AuthenticationManager authenticationManager,
+			PasswordEncoder passwordEncoder) {
+		this.authenticationManager = authenticationManager;
+		this.compteRepository = compteRepository;
+		this.passwordEncoder = passwordEncoder;
+	}
+
+	public Compte signup(RegisterUserDto input) {
+        Compte compte = new Compte();
+        
+        compte.setFirstname(input.getFirstname())
+        compte.setEmail(input.getEmail())
+        compte.setPassword(passwordEncoder.encode(input.getPassword()));
+
+        return compteRepository.save(compte);
+    }
+
+	public User authenticate(LoginUserDto input) {
+		authenticationManager
+				.authenticate(new UsernamePasswordAuthenticationToken(input.getEmail(), input.getPassword()));
+
+		return userRepository.findByEmail(input.getEmail()).orElseThrow();
+	}
+}

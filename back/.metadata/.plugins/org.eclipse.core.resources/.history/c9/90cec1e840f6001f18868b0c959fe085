@@ -1,0 +1,15 @@
+package com.trial.product.service;
+
+import java.util.List;
+
+import com.trial.product.model.Product;
+
+public interface IProductService {
+
+	Product createProduct(Product product);
+
+	List<Product> getAllProducts();
+
+	Product getProductById(Long id);
+
+}

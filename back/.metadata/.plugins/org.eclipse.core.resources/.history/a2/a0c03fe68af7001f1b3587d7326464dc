@@ -1,0 +1,21 @@
+package com.trial.product.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import com.trial.product.model.Product;
+
+public interface IProductService {
+
+	Product createProduct(Product product);
+
+	List<Product> getAllProducts();
+
+	Optional<Product> getProductById(Long id);
+
+	Optional<Product> updateProduct(Long id, Product productUpdates);
+
+	boolean deleteProduct(Long id);
+	boolen test();
+
+}

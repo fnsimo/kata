@@ -1,0 +1,80 @@
+/* Contact form container */
+.contact-form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 40px;
+    width: 100%;
+    max-width: 1200px; /* Largeur maximale du formulaire */
+    margin: 0 auto;  /* Centrer le formulaire */
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-sizing: border-box;
+  }
+  
+  /* Form row for email and message fields */
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;  /* Permet au formulaire de se réorganiser sur de petits écrans */
+    gap: 20px;
+    width: 100%;
+  }
+  
+  .form-column {
+    flex: 1 1 45%; /* Largeur flexible mais pas plus de 45% */
+    margin-bottom: 1.5rem;  /* Espacement entre les champs */
+    box-sizing: border-box;
+  }
+  
+  /* Form input and textarea */
+  input, textarea {
+    width: 100%;  /* S'assure que l'élément prend toute la largeur du parent */
+    padding: 10px;  /* Ajouter un peu de padding pour l'espace interne */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;  /* Inclure le padding et la bordure dans la largeur */
+  }
+  
+  /* Réduire la largeur pour les écrans plus petits */
+  @media (max-width: 768px) {
+    .form-column {
+      flex: 1 1 100%;  /* Sur les petits écrans, chaque champ occupe toute la largeur */
+    }
+  }
+  
+  /* Style pour le message de succès */
+  .success-message {
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
+    color: #155724;
+  }
+  
+  .success-text {
+    margin: 0;
+  }
+  
+  /* Bouton de soumission */
+  button {
+    margin-top: 20px;
+    padding: 12px 20px;  /* Augmenter la taille du bouton */
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+  }
+  
+  /* Messages d'erreur */
+  .p-error {
+    color: red;
+    font-size: 12px;
+  }
+  

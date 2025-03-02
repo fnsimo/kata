@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item key="hasShownOverlayPopupBefore" value="true"/>
+	<item key="replaceBarOpen" value="true"/>
+	<list key="replacehistory">
+		<item value="Envie"/>
+		<item value="email"/>
+	</list>
+	<list key="searchhistory">
+		<item value="Wishlist"/>
+		<item value="handlerExceptionResolver"/>
+		<item value="extractUsername"/>
+		<item value="username"/>
+		<item value="extractClaim"/>
+		<item value="buildToken"/>
+		<item value="generateToken"/>
+		<item value="extractAllClaims"/>
+		<item value="authenticationManager"/>
+		<item value="AuthenticationProvider"/>
+		<item value="jwtAuthenticationFilter"/>
+		<item value="passwordEncoder"/>
+		<item value="PasswordEncoder"/>
+		<item value="userDetailsService"/>
+	</list>
+</section>

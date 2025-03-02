@@ -1,0 +1,11 @@
+package com.trial.product.dto;
+
+import java.time.Instant;
+
+public class RegisterUserDto {
+	private String email;
+	private String username;
+	private String firstname;
+	private String password;
+	private Instant createdAt;
+}

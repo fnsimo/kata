@@ -1,0 +1,7 @@
+package com.trial.product.controller;
+
+@RestController
+@RequestMapping("/api/envie"
+public class EnvieController {
+
+}

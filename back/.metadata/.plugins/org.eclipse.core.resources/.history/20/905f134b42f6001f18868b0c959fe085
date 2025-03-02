@@ -1,0 +1,5 @@
+package com.trial.product.repository;
+
+public interface CompteRepository {
+
+}

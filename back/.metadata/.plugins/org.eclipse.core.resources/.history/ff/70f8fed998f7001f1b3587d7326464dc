@@ -1,0 +1,5 @@
+package com.trial.product.service;
+
+public interface IEnvieService {
+
+}

@@ -1,0 +1,44 @@
+package com.trial.product.security;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		http.authorizeRequests().antMatchers("/h2-console/**").permitAll() // Allow access to H2 console
+				.anyRequest().authenticated() // Secure all other endpoints
+				.and().csrf().disable() // Disable CSRF for H2 console access
+				.headers().frameOptions().sameOrigin(); // Allow frames for H2 console
+
+		// Add JWT filter configuration here if needed
+		// For example, a JWT authentication filter for your application
+
+		return http.build();
+	}
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder(); // Use this encoder for user password security
+	}
+
+	@Bean
+	public UserDetailsService userDetailsService() {
+		// Example for in-memory user store
+		InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+		manager.createUser(
+				User.withUsername("user").password(passwordEncoder().encode("password")).roles("USER").build());
+		return manager;
+	}
+}

@@ -1,0 +1,5 @@
+package com.trial.product.mapper;
+
+public interface ProductMapper {
+
+}

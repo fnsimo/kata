@@ -1,0 +1,46 @@
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class PanierService {
+
+    private final PanierRepository panierRepository;
+    private final ProductRepository productRepository;
+
+    public PanierService(PanierRepository panierRepository, ProductRepository productRepository) {
+        this.panierRepository = panierRepository;
+        this.productRepository = productRepository;
+    }
+
+    @Transactional
+    public Panier addProductToPanier(Long compteId, Long productId) {
+        Panier panier = panierRepository.findByCompteId(compteId)
+                .orElseGet(() -> createNewPanier(compteId)); // Créer un panier si l'utilisateur n'en a pas encore
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Produit non trouvé"));
+
+        panier.getProducts().add(product);  // Ajouter le produit au panier
+        return panierRepository.save(panier);  // Sauvegarder le panier
+    }
+
+    @Transactional
+    public Panier removeProductFromPanier(Long compteId, Long productId) {
+        Panier panier = panierRepository.findByCompteId(compteId)
+                .orElseThrow(() -> new RuntimeException("Panier non trouvé"));
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Produit non trouvé"));
+
+        panier.getProducts().remove(product);  // Supprimer le produit du panier
+        return panierRepository.save(panier);  // Sauvegarder les changements
+    }
+
+    private Panier createNewPanier(Long compteId) {
+        Panier panier = new Panier();
+        Compte compte = new Compte();
+        compte.setId(compteId);
+        panier.setCompte(compte);  // Associer le panier à un utilisateur
+        return panierRepository.save(panier);
+    }
+}

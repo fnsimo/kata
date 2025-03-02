@@ -1,0 +1,17 @@
+spring.application.name=product
+
+# H2 en mode fichier pour garder les données après chaque redémarrage
+spring.datasource.url=jdbc:h2:file:./data/testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+
+# Activer la console H2
+spring.h2.console.enabled=true
+
+# Ne jamais recréer le schéma automatiquement
+spring.jpa.hibernate.ddl-auto=validate
+
+# Exécuter les scripts SQL uniquement si la base est vide
+spring.sql.init.mode=always
+

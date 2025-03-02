@@ -1,0 +1,40 @@
+package com.trial.product.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.trial.product.model.Panier;
+
+@RestController
+@RequestMapping("/api/panier")
+public class PanierController {
+
+	private final PanierService panierService;
+
+	public PanierController(PanierService panierService) {
+		this.panierService = panierService;
+	}
+
+	@PostMapping("/add/{compteId}/{productId}")
+	public ResponseEntity<Panier> addProductToPanier(@PathVariable Long compteId, @PathVariable Long productId) {
+		Panier panier = panierService.addProductToPanier(compteId, productId);
+		return ResponseEntity.ok(panier);
+	}
+
+	@DeleteMapping("/remove/{compteId}/{productId}")
+	public ResponseEntity<Panier> removeProductFromPanier(@PathVariable Long compteId, @PathVariable Long productId) {
+		Panier panier = panierService.removeProductFromPanier(compteId, productId);
+		return ResponseEntity.ok(panier);
+	}
+
+	@GetMapping("/{compteId}")
+	public ResponseEntity<Panier> getPanier(@PathVariable Long compteId) {
+		Panier panier = panierService.getPanierByCompteId(compteId); // Implémenter cette méthode dans le service
+		return ResponseEntity.ok(panier);
+	}
+}

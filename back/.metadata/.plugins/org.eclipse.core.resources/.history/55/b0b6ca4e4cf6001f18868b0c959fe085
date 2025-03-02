@@ -1,0 +1,53 @@
+package com.trial.product.security;
+
+import java.security.Key;
+import java.util.Date;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.JwtParser;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+
+public class JwtService {
+
+	private final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256); // Utilisation de la bonne clé secrète
+
+	// Générer le token JWT
+	public String generateToken(String username) {
+		JwtBuilder builder = Jwts.builder().setSubject(username).setIssuedAt(new Date())
+				.setExpiration(new Date(System.currentTimeMillis() + 86400000)) // expiration de 24 heures
+				.signWith(SECRET_KEY, SignatureAlgorithm.HS256); // Utilisation explicite de SignatureAlgorithm
+
+		return builder.compact();
+	}
+
+	// Extraire le nom d'utilisateur du token
+	public String extractUsername(String token) {
+		Claims claims = parseClaimsJwt(token);
+		return claims.getSubject();
+	}
+
+	// Vérifier si le token est expiré
+	public boolean isTokenExpired(String token) {
+		Date expiration = parseClaimsJwt(token).getExpiration();
+		return expiration.before(new Date());
+	}
+
+	// Valider le token JWT
+	public boolean validateToken(String token, String username) {
+		final String extractedUsername = extractUsername(token);
+		return (extractedUsername.equals(username) && !isTokenExpired(token));
+	}
+
+	// Méthode pour analyser un token JWT
+	private Claims parseClaimsJwt(String token) {
+		// Création du JwtParser à partir de Jwts.parser()
+		JwtParser parser = Jwts.parserBuilder() // Correct usage of parserBuilder for the JwtParser
+				.setSigningKey(SECRET_KEY) // Set the correct signing key
+				.build();
+
+		return parser.parseClaimsJws(token).getBody(); // Parse the JWT and extract claims
+	}
+}

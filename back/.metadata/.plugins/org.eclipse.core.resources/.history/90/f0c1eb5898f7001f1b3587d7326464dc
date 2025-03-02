@@ -1,0 +1,7 @@
+package com.trial.product.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface EnvieRepository extends JpaRepository<Envie, Long> {
+
+}

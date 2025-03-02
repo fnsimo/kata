@@ -1,0 +1,5 @@
+package com.trial.product.security;
+
+public class AuthenticationService {
+
+}

@@ -1,0 +1,35 @@
+package com.trial.product.security;
+
+import java.util.ArrayList;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+
+	public JwtAuthenticationFilter() {
+		super("/api/**"); // URL pattern that needs JWT authentication
+	}
+
+	@Override
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+			throws AuthenticationException {
+		String token = request.getHeader("Authorization");
+		if (token != null && token.startsWith("Bearer ")) {
+			token = token.substring(7);
+			// Validate JWT token here and set authentication in context
+			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken("username",
+					null, new ArrayList<>() // Replace "username" with user details
+			);
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+			return authentication;
+		}
+		throw new RuntimeException("Invalid token");
+	}
+}

@@ -1,0 +1,51 @@
+<p-card styleClass="contact-form" class="flex justify-content-center">
+    <h2>Contactez-nous</h2>
+
+    <!-- Message de succès -->
+    <div *ngIf="successMessage" class="success-message">
+      <p class="success-text">{{ successMessage }}</p>
+    </div>
+
+    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" novalidate>
+
+        <!-- Première ligne : Email et Message -->
+        <div class="form-row">
+            <div class="field form-column">
+                <label for="email" class="block">Email</label>
+                <input 
+                    id="email"
+                    type="email"
+                    pInputText 
+                    placeholder="Votre email" 
+                    formControlName="email" 
+                />
+                <small 
+                    class="p-error block" 
+                    *ngIf="contactForm.get('email')?.invalid && contactForm.get('email')?.touched"
+                >
+                    Un email valide est requis.
+                </small>
+            </div>
+
+            <div class="field form-column">
+                <label for="message" class="block">Message</label>
+                <textarea 
+                    id="message"
+                    pTextarea 
+                    placeholder="Votre message (max 300 caractères)"
+                    formControlName="message"
+                    rows="5"
+                ></textarea>
+                <small 
+                    class="p-error block" 
+                    *ngIf="contactForm.get('message')?.invalid && contactForm.get('message')?.touched"
+                >
+                    Le message est requis (max 300 caractères).
+                </small>
+            </div>
+        </div>
+
+        <!-- Bouton Envoyer -->
+        <button pButton type="submit" label="Envoyer" [disabled]="contactForm.invalid"></button>
+    </form>
+</p-card>

@@ -1,0 +1,54 @@
+package com.trial.product.security;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.trial.product.service.CompteServiceImpl;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+	private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+	// Constructor injection for JwtAuthenticationFilter
+	public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+		this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+	}
+
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		http.csrf().disable().authorizeRequests().antMatchers("/auth/**").permitAll().anyRequest().authenticated().and()
+				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+		return http.build();
+	}
+
+	// Bean pour AuthenticationManager (nécessaire pour l'authentification via JWT)
+	@Bean
+	public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+		return http.getSharedObject(AuthenticationManagerBuilder.class).build();
+	}
+
+	// Bean pour UserDetailsService (service pour récupérer les utilisateurs)
+	@Bean
+	public UserDetailsService userDetailsService() {
+		return new CompteServiceImpl();
+	}
+
+	// Bean pour le PasswordEncoder (si nécessaire, mais avec JWT ce n'est pas
+	// indispensable)
+	@Bean
+	public NoOpPasswordEncoder passwordEncoder() {
+		return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance(); // Pour la simplicité, mais vous pouvez en
+																		// choisir un autre
+	}
+}

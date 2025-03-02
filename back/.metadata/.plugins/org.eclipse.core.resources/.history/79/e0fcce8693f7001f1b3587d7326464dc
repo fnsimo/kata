@@ -1,0 +1,9 @@
+package com.trial.product.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.trial.product.model.Panier;
+
+public interface PanierRepository extends JpaRepository<Panier, Long> {
+
+}

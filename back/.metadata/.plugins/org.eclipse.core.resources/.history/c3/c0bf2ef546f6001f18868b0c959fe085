@@ -1,0 +1,64 @@
+package com.trial.product.controller;
+
+package com.alten.ecommerce.controller;
+
+import java.util.Date;
+import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.alten.ecommerce.service.UserService;
+import com.trial.product.model.Compte;
+import com.trial.product.service.ICompteService;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
+
+	@Value("${jwt.secret}")
+	private String jwtSecret;
+
+	@Value("${jwt.expiration}")
+	private long jwtExpiration;
+	
+	private final ICompteService compteService;
+
+	public AuthController(ICompteService compteService) {
+		this.compteService = compteService;
+	}
+
+	
+
+
+
+	@PostMapping("/register")
+	public ResponseEntity<?> register(@RequestBody Compte compte) {
+		return ResponseEntity.ok(compteService.createCompte(compte));
+	}
+
+	@PostMapping("/login")
+	public ResponseEntity<?> login(@RequestBody Map<String, String> request) {
+		Optional<Compte> user = compteService.findByEmail(request.get("email"))
+				.orElseThrow(() -> new RuntimeException("User not found"));
+
+		if (!user.getPassword().equals(request.get("password"))) {
+			return ResponseEntity.status(401).body("Invalid credentials");
+		}
+
+		String token = Jwts.builder().setSubject(user.getEmail())
+				.setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
+				.signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
+
+		return ResponseEntity.ok(Map.of("token", token));
+	}
+}

@@ -1,0 +1,5 @@
+package com.trial.product.exception;
+
+public class GlobalExceptionHandler {
+
+}

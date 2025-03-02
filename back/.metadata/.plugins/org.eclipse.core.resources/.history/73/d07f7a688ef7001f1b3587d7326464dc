@@ -1,0 +1,21 @@
+package com.trial.product.mapper;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
+
+import com.trial.product.dto.CompteDto;
+import com.trial.product.dto.ProductDto;
+import com.trial.product.model.Compte;
+import com.trial.product.model.Product;
+
+@Mapper(componentModel = "spring")
+public interface ProductMapper {
+
+	ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
+
+	ProductDto enityToDto(Product product);
+
+	Product dtoToEntity(ProductDto productDto);
+	
+
+}
